@@ -123,7 +123,7 @@ const words = [
     "show ",
     "house ",
     "both ",
-    "betweem ",
+    "between ",
     "need ",
     "mean ",
     "call ",
