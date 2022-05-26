@@ -4,33 +4,45 @@ timeTag = document.querySelector(".time span b"),
 mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span"),
 cpmTag = document.querySelector(".cpm span"),
-tryAgainBtn = document.querySelector("button");
+tryAgainBtn = document.querySelector("button"),
+languageTag = document.querySelector(".language-select select");
 
+let paragraph = ''
 
 let timer,
 maxTime = 60,
 timeLeft = maxTime,
 charIndex = mistakes = isTyping = 0;
 
-function randomWords(){
-    typingText.innerHTML = "";
+async function getParagraph() {
+    paragraph = ''
     for(let i = 0; i < 200; i++){
         let randIndex = Math.floor(Math.random() * words.length);
-        words[randIndex].split("").forEach(span => {
-            let spanTag = `<span>${span}</span>`;
-            typingText.innerHTML += spanTag;
-        });
-        typingText.querySelectorAll("span")[0].classList.add("active");
+        paragraph += words[randIndex]
+    }
+    if(languageTag.value != 'en'){
+        changeLang()
+    } 
+    renderParagraph();
+};
+
+async function renderParagraph(){
+    typingText.innerHTML = "";
+    paragraph.split("").forEach(span => {
+        let spanTag = `<span>${span}</span>`;
+        typingText.innerHTML += spanTag;
+    });
+    typingText.querySelectorAll("span")[0].classList.add("active");
     document.addEventListener("keydown", () => inpField.focus());
     typingText.addEventListener("click", () => inpField.focus());
-    }
-};
+}
+
 
 function initTyping() {
     const characters = typingText.querySelectorAll("span");
     let typedChar = inpField.value.split("")[charIndex]; 
 
-    if (charIndex < characters.length) {
+    if (charIndex < characters.length - 1 && timeLeft > 0) {
         if(!isTyping) {
             timer = setInterval(initTimer, 1000);
             isTyping = true;
@@ -76,7 +88,7 @@ function initTimer(){
 }
 
 function resetGame() {
-    randomWords();
+    getParagraph();
     inpField.value = "";
     clearInterval(timer);
     timeLeft = maxTime;
@@ -87,6 +99,38 @@ function resetGame() {
     cpmTag.innerText = 0;
 }
 
-randomWords();
+async function changeLang() {
+    const lang = languageTag.value;
+    const text = paragraph
+    const URL = 'http://localhost:8080/translate'
+    const obj = {'trgt': lang, 'text': text}
+    const params = {
+        headers:{
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(obj),
+        method:"POST",
+    }
+
+    fetch(URL, params)
+        .then(response => response.json())
+        .then(data => {
+            paragraph = data.text
+            renderParagraph();
+            inpField.value = "";
+            clearInterval(timer);
+            timeLeft = maxTime;
+            charIndex = mistakes = isTyping = 0;
+            timeTag.innerText = timeLeft;
+            mistakeTag.innerText = mistakes;
+            wpmTag.innerText = 0;
+            cpmTag.innerText = 0;
+        })
+
+}
+
+getParagraph();
+console.log(paragraph)
 inpField.addEventListener("input", initTyping);
 tryAgainBtn.addEventListener("click", resetGame);
