@@ -4,8 +4,13 @@ timeTag = document.querySelector(".time span b"),
 mistakeTag = document.querySelector(".mistake span"),
 wpmTag = document.querySelector(".wpm span"),
 cpmTag = document.querySelector(".cpm span"),
-tryAgainBtn = document.querySelector("button"),
-languageTag = document.querySelector(".language-select select");
+tryAgainBtn = document.querySelector(".restart"),
+languageTag = document.querySelector(".language-select select"),
+open = document.getElementById("open"),
+modal_container = document.getElementById("modal_container"),
+interact = document.getElementById("interact"),
+close = document.getElementById('close');
+
 
 let paragraph = ''
 
@@ -134,3 +139,10 @@ getParagraph();
 console.log(paragraph)
 inpField.addEventListener("input", initTyping);
 tryAgainBtn.addEventListener("click", resetGame);
+
+open.addEventListener('click', () => {
+    modal_container.classList.add('show');
+});
+close.addEventListener('click', () => {
+    modal_container.classList.remove('show');
+});

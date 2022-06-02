@@ -115,6 +115,23 @@ body{
     transform: scale(0.97);
 }
 
+.modal button{
+    border: none;
+    outline: none;
+    width: 105px;
+    padding: 8px 0;
+    color: gainsboro;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    background: darkslategray;
+    transition: transform 0.3s ease;
+}
+
+.modal button:active{
+    transform: scale(0.97);
+}
+
 .interact .language-select{
     border: none;
     outline: none;
@@ -168,4 +185,33 @@ body{
 
 .result-details li b{
     font-weight: 500;
+}
+
+.modal-container{
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    transition: opacity 0.3s ease;
+}
+
+.modal-container.show {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.modal {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 30px;
+    width: 600px;
+    max-width: 100%;
+
 }
