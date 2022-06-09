@@ -208,7 +208,7 @@ body{
 }
 
 .modal {
-    background-color: #fff;
+    background-color: gainsboro;
     border-radius: 5px;
     padding: 30px;
     width: 600px;

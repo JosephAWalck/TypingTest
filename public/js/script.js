@@ -32,6 +32,7 @@ async function getParagraph() {
 };
 
 async function renderParagraph(){
+    paragraph.toLowerCase()
     typingText.innerHTML = "";
     paragraph.split("").forEach(span => {
         let spanTag = `<span>${span}</span>`;
